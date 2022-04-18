@@ -1,4 +1,4 @@
-package ivan.rest.example.spring;
+package ivan.rest.example.configuration;
 
 import ivan.rest.example.EmployeeRestServiceNoDbApplication;
 import ivan.rest.example.controller.EmployeeController;
@@ -12,15 +12,19 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import javax.annotation.PostConstruct;
 
-//The @SpringBootTest annotation tells Spring Boot to look for a main configuration class (one with @SpringBootApplication, for instance)
-// and use that to start a Spring application context
-// RestTemplate already knows about host and port
-// *for integration tests*
+/**
+ * The @SpringBootTest annotation tells Spring Boot to look for a main configuration class (one with @SpringBootApplication, for instance)
+ * and use that to start a Spring application context
+ * <p>
+ * RestTemplate already knows about host and port for integration tests
+ * <p>
+ * To make Cucumber aware of your test configuration you can annotate a configuration class with @CucumberContextConfiguration
+ * <p>
+ * The @ContextConfiguration - needs to be clarified
+ **/
 @SpringBootTest(classes = EmployeeRestServiceNoDbApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@ContextConfiguration
-//To make Cucumber aware of your test configuration you can annotate a configuration class with @CucumberContextConfiguration
 @CucumberContextConfiguration
-public abstract class SpringIntegrationTest {
+public abstract class SpringIntegrationTestConfiguration {
 
     protected String baseUrl;
 

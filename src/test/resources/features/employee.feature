@@ -36,4 +36,4 @@ Feature: Employee rest service test feature
     Then retrieved data is equal to added data for specified id
 
     Scenario: Put one Employee to the rest service
-      Given Employee 10, Ivan, MX159753, University added to Employee rest service repository
+      Given Employee '10, Ivan, MX159753, University' added to Employee rest service repository

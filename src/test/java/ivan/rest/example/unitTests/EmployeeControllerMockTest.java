@@ -1,6 +1,7 @@
 package ivan.rest.example.unitTests;
 
 import ivan.rest.example.controller.EmployeeController;
+import ivan.rest.example.exceptions.TestExecutionException;
 import ivan.rest.example.model.Employee;
 import ivan.rest.example.service.EmployeeService;
 import lombok.SneakyThrows;
@@ -23,11 +24,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Launches only certain controller
+ * The full Spring application context is started but without the server. We can perform the tests to only the web layer
+ * for unit test
+ *
+ * @Autowired - by declaring all the bean dependencies in a Spring configuration file, the Spring container can autowire relationships between collaborating beans
+ * We can use the @MockBean to add mock objects to the Spring application context. The mock will replace any existing bean of the same type in the application context.
+ **/
 @Slf4j
 @RunWith(SpringRunner.class)
-//Launches only certain controller
-//The full Spring application context is started but without the server. We can perform the tests to only the web layer
-// *for unit test*
 @WebMvcTest(value = EmployeeController.class)
 public class EmployeeControllerMockTest {
 
@@ -39,9 +45,6 @@ public class EmployeeControllerMockTest {
     EmployeeService employeeServiceMock;
 
     private final Employee employee = new Employee();
-//    private final ObjectMapper objectMapper = new ObjectMapper();
-//    private final TypeReference<?> mapTypeReference = new TypeReference<Map<String, Object>>() {
-//    };
 
     private static final String EMPLOYEE_SUCCESSFULLY_ADDED = "Employee with id = %s has been added!";
     private static final String EMPLOYEES_SUCCESSFULLY_DELETED = "All employees have been successfully deleted!";
@@ -56,17 +59,18 @@ public class EmployeeControllerMockTest {
         Mockito.verifyNoMoreInteractions(employeeServiceMock);
     }
 
-    @SneakyThrows
+
     @Test
-    public void deleteAllEmployeesViaRest() {
-        mockMvc.perform(delete("/employee"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(EMPLOYEES_SUCCESSFULLY_DELETED));
+    public void deleteAllEmployeesViaRest() throws TestExecutionException {
+        try {
+            mockMvc.perform(delete("/employee"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string(EMPLOYEES_SUCCESSFULLY_DELETED));
+        } catch (Exception e) {
+            throw new TestExecutionException(e.getMessage());
+        }
 
         Mockito.verify(employeeServiceMock).clear();
-
-//        Create a JSON string from object
-//        log.info("INFOOO: {}", new ObjectMapper().writeValueAsString(new Employee()));
     }
 
     @SneakyThrows
@@ -76,17 +80,11 @@ public class EmployeeControllerMockTest {
 
         Mockito.doReturn(employee).when(employeeServiceMock).getById(anyInt());
 
-        /*String response =*/
         mockMvc.perform(get("/employee/" + employee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").value(employee))
                 .andExpect(jsonPath("$.id").value(employee.getId()));
-//                .andReturn().getResponse().getContentAsString();
 
         Mockito.verify(employeeServiceMock).getById(anyInt());
-
-//        Map<String, Object> actualMap = objectMapper.readValue(response, mapTypeReference);
-//        Map<String, Object> expectedMap = objectMapper.convertValue(employee, mapTypeReference);
-//        Assert.assertEquals(expectedMap, actualMap);
     }
 }

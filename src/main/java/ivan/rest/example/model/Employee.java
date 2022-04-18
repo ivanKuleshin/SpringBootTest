@@ -1,6 +1,7 @@
 package ivan.rest.example.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
+@Builder
 public class Employee implements Comparable<Employee> {
     private Integer id;
     private String name;

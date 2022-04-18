@@ -3,7 +3,7 @@ package ivan.rest.example.employeeSteps;
 import io.cucumber.spring.CucumberContextConfiguration;
 import ivan.rest.example.exception.CustomRuntimeException;
 import ivan.rest.example.model.Employee;
-import ivan.rest.example.spring.SpringIntegrationTest;
+import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
@@ -17,6 +17,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
+import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,18 +30,18 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
 @CucumberContextConfiguration
-public class EmployeeDefStep extends SpringIntegrationTest {
+public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
 
-//    @Before
-//    public void doSetup() {
-//        //Was added to test the parallel execution:
-//        long threadId = Thread.currentThread().getId();
-//        String processName = ManagementFactory.getRuntimeMXBean().getName();
-//        log.info(String.format("Started in thread: %s, in JVM: %s", threadId, processName));
-//    }
+    @Before
+    public void doSetup() {
+        // Was added to test the parallel execution:
+        long threadId = Thread.currentThread().getId();
+        String processName = ManagementFactory.getRuntimeMXBean().getName();
+        log.info(String.format("Started in thread: %s, in JVM: %s", threadId, processName));
+    }
 
     @Before(value = "@testData")
-    public void kek() {
+    public void setUp() {
         System.out.println("This methods performs only for the Scenarios with @testData");
     }
 
@@ -52,20 +53,22 @@ public class EmployeeDefStep extends SpringIntegrationTest {
 
     @DataTableType
     public Employee employeeEntry(Map<String, String> row) {
-        return new Employee(Integer.valueOf(row.get("id")),
-                row.get("name"),
-                row.get("passportNumber"),
-                row.get("education"));
+        return Employee.builder()
+                .id(Integer.valueOf(row.get("id")))
+                .name(row.get("name"))
+                .passportNumber(row.get("passportNumber"))
+                .education(row.get("education"))
+                .build();
     }
 
-    @ParameterType(value = "[\\d+,\\s?[a-zA-Z]+,\\s?[A-Z]{2}\\d+,\\s?\\w+]*")
+    @ParameterType(value = ".*")
     public Employee singleEmployee(String employeeParams) {
         List<String> params = Stream.of(employeeParams.split(",")).map(String::trim).collect(Collectors.toList());
 
         return new Employee(Integer.valueOf(params.get(0)), params.get(1), params.get(2), params.get(3));
     }
 
-    @Given("Employee {singleEmployee} added to Employee rest service repository")
+    @Given("Employee '{singleEmployee}' added to Employee rest service repository")
     public void addEmployee(Employee employee) {
         restTemplate.put("/employee", employee);
 
@@ -88,7 +91,7 @@ public class EmployeeDefStep extends SpringIntegrationTest {
                 String.format("%s/%s", baseUrl, endpoint),
                 HttpMethod.resolve(methodName),
                 null,
-                new ParameterizedTypeReference<List<Employee>>() {
+                new ParameterizedTypeReference<>() {
                 }
         );
 
@@ -117,6 +120,7 @@ public class EmployeeDefStep extends SpringIntegrationTest {
         Employee expected = castCollectionTo(Employee.class, session.get(EXPECTED_LIST, List.class))
                 .stream().filter(employee -> employee.getId() == id).findFirst()
                 .orElseThrow(() -> new CustomRuntimeException(String.format("Expected employee not found with id = %s", id)));
+
         session.put(EXPECTED_RESULT, expected);
     }
 

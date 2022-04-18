@@ -1,7 +1,6 @@
 package ivan.rest.example;
 
-import io.cucumber.spring.CucumberContextConfiguration;
-import ivan.rest.example.spring.SpringIntegrationTest;
+import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
@@ -14,5 +13,5 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "ivan.rest.example.employeeSteps",
         tags = "@employee or @smoke")
-public class RunEmployeeTest extends SpringIntegrationTest {
+public class RunEmployeeTest extends SpringIntegrationTestConfiguration {
 }
