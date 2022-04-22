@@ -5,5 +5,9 @@ public interface Session {
 
     <T> T get(SessionKey key, Class<T> asType);
 
+    Object get(SessionKey key);
+
+    void checkIfExist(SessionKey key);
+
     void clear();
 }

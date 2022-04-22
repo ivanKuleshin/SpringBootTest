@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -34,6 +36,21 @@ public class EmployeeController {
     public List<Employee> addList(@RequestBody List<Employee> employees) {
         employeeService.addList(employees);
         return employeeService.getAll();
+    }
+
+    @PatchMapping("/update")
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        Employee employeeFromDB = employeeService.getById(employee.getId());
+
+        Employee employeeToUpdate = Employee.builder()
+                .id(employee.getId())
+                .name(isNull(employee.getName()) ? employeeFromDB.getName() : employee.getName())
+                .passportNumber(isNull(employee.getPassportNumber()) ? employeeFromDB.getPassportNumber() : employee.getPassportNumber())
+                .education(isNull(employee.getEducation()) ? employeeFromDB.getEducation() : employee.getEducation())
+                .address(employeeFromDB.getAddress())
+                .build();
+
+        return employeeService.update(employeeToUpdate);
     }
 
     @DeleteMapping("/{id}")

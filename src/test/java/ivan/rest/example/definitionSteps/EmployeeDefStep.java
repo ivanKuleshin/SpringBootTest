@@ -1,9 +1,6 @@
-package ivan.rest.example.employeeSteps;
+package ivan.rest.example.definitionSteps;
 
-import io.cucumber.spring.CucumberContextConfiguration;
-import ivan.rest.example.exception.CustomRuntimeException;
-import ivan.rest.example.model.Employee;
-import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
@@ -11,26 +8,42 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.spring.CucumberContextConfiguration;
+import io.restassured.response.Response;
+import ivan.rest.example.clients.RestClient;
+import ivan.rest.example.clients.RestClient.RequestTypes;
+import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
+import ivan.rest.example.exception.CustomRuntimeException;
+import ivan.rest.example.model.Address;
+import ivan.rest.example.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.lang.management.ManagementFactory;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ivan.rest.example.util.session.SessionKey.*;
 import static ivan.rest.example.util.testUtils.TestUtil.castCollectionTo;
+import static ivan.rest.example.util.testUtils.TestUtil.convertValue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
 @CucumberContextConfiguration
 public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
+
+    @Autowired
+    private RestClient restClient;
+
+    private final TypeReference<List<Employee>> employeeListTypeReference = new TypeReference<>() {
+    };
+
+    private static final String ALL_VALUES = "$";
 
     @Before
     public void doSetup() {
@@ -58,6 +71,11 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
                 .name(row.get("name"))
                 .passportNumber(row.get("passportNumber"))
                 .education(row.get("education"))
+                .address(Address.builder()
+                        .city(row.get("address.city"))
+                        .country(row.get("address.country"))
+                        .zip(row.get("address.zip"))
+                        .build())
                 .build();
     }
 
@@ -65,7 +83,7 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
     public Employee singleEmployee(String employeeParams) {
         List<String> params = Stream.of(employeeParams.split(",")).map(String::trim).collect(Collectors.toList());
 
-        return new Employee(Integer.valueOf(params.get(0)), params.get(1), params.get(2), params.get(3));
+        return new Employee(Integer.valueOf(params.get(0)), params.get(1), params.get(2), params.get(3), null);
     }
 
     @Given("Employee '{singleEmployee}' added to Employee rest service repository")
@@ -81,8 +99,9 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
     @Given("employees added to Employee rest service repository:")
     public void addListOfEmployees(List<Employee> employees) {
         restTemplate.put("/employee/list", employees);
-        List<Employee> expectedList = employees.stream().sorted().collect(Collectors.toList());
-        session.put(EXPECTED_LIST, expectedList);
+
+        employees.sort(Comparator.comparing(Employee::getId));
+        session.put(EXPECTED_RESULT, employees);
     }
 
     @When("we send {string} request to the {string} endpoint")
@@ -99,10 +118,38 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
         session.put(ACTUAL_LIST, actualList);
     }
 
+    @When("the {string} request is sent to the {string} endpoint with params:")
+    public void theGETRequestIsSentToTheEmployeeEndpointWithParams(String requestTypeStr, String endpoint, Map<String, String> params) {
+        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
+        var response = restClient.sendRequestWithParams(requestType, endpoint, params);
+//        .jsonPath().get("$");
+        session.put(RESPONSE, response);
+    }
+
+    @When("the {string} request is sent to the {string} endpoint without params")
+    public void theGETRequestIsSentToTheEmployeeEndpointWithoutParams(String requestTypeStr, String endpoint) {
+        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
+        var response = restClient.sendRequestWithoutParams(requestType, endpoint);
+        session.put(RESPONSE, response);
+    }
+
+    @Then("the status code is {int}")
+    public void verifyStatusCode(int expectedStatusCode) {
+        Response response = session.get(RESPONSE, Response.class);
+        int actualStatusCode = response.getStatusCode();
+
+        assertThat(actualStatusCode)
+                .as("Status code mismatch! \n Response is %s", response.getBody().print())
+                .isEqualTo(expectedStatusCode);
+    }
+
     @Then("retrieved data is equal to added data")
     public void retrievedDataIsEqualToAddedData() {
-        assertThat(session.get(ACTUAL_LIST, Object.class))
-                .isEqualTo(session.get(EXPECTED_LIST, Object.class));
+        List<Employee> actualResult = convertValue(session.get(RESPONSE, Response.class).jsonPath().get(ALL_VALUES),
+                employeeListTypeReference);
+        List<Employee> expectedResult = convertValue(session.get(EXPECTED_RESULT), employeeListTypeReference);
+
+        assertThat(actualResult).isEqualTo(expectedResult);
     }
 
     @When("we send {string} request to the {string} endpoint with {int} id")

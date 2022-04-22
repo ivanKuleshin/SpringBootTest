@@ -1,9 +1,9 @@
 package ivan.rest.example.configuration;
 
+import io.cucumber.spring.CucumberContextConfiguration;
 import ivan.rest.example.EmployeeRestServiceNoDbApplication;
 import ivan.rest.example.controller.EmployeeController;
 import ivan.rest.example.util.session.Session;
-import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +26,7 @@ import javax.annotation.PostConstruct;
 @CucumberContextConfiguration
 public abstract class SpringIntegrationTestConfiguration {
 
-    protected String baseUrl;
+    public static String baseUrl;
 
     @Autowired
     protected TestRestTemplate restTemplate;

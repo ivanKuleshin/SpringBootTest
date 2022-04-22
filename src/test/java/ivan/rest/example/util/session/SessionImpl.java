@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
 @Component
 public class SessionImpl implements Session {
 
-    private ConcurrentHashMap<SessionKey, Object> dataMap;
+    private static ConcurrentHashMap<SessionKey, Object> dataMap;
 
     @PostConstruct
     private void init() {
@@ -32,11 +32,18 @@ public class SessionImpl implements Session {
         return asType.cast(dataMap.get(key));
     }
 
+    @Override
+    public Object get(SessionKey key) {
+        checkAllNotNull(key);
+        checkIfExist(key);
+        return dataMap.get(key);
+    }
+
     public void clear() {
         dataMap.clear();
     }
 
-    private void checkIfExist(SessionKey key) {
+    public void checkIfExist(SessionKey key) {
         if (!dataMap.containsKey(key)) {
             throw new CustomRuntimeException(String.format("Entry with key = %s not found!", key));
         }

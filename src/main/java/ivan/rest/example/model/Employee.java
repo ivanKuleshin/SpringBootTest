@@ -4,17 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Employee implements Comparable<Employee> {
+
+//    @NotNull
     private Integer id;
     private String name;
     private String passportNumber;
     private String education;
+    private Address address;
 
     @Override
     public int compareTo(Employee employee) {

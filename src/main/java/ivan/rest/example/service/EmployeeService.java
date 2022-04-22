@@ -4,9 +4,10 @@ import ivan.rest.example.exception.CustomRuntimeException;
 import ivan.rest.example.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
@@ -16,12 +17,27 @@ public class EmployeeService {
     private final ConcurrentHashMap<Integer, Employee> employeeMap = new ConcurrentHashMap<>();
 
     public List<Employee> getAll() {
-        return new ArrayList<>(employeeMap.values());
+        return employeeMap.values()
+                .stream().sorted(Comparator.comparing(Employee::getId))
+                .collect(Collectors.toList());
     }
 
     public Employee getById(Integer id) {
         checkKey(id);
         return employeeMap.getOrDefault(id, null);
+    }
+
+    public Employee update(Employee employee){
+        if (isNull(employee) || isNull(employee.getId())) {
+            throw new CustomRuntimeException("Employee cannot be null");
+        } else if (!employeeMap.containsKey(employee.getId())) {
+            throw new CustomRuntimeException(String
+                    .format("Employee with such id = %s doesn't  exist", employee.getId()));
+        } else {
+            employeeMap.put(employee.getId(), employee);
+        }
+
+        return employee;
     }
 
     public void add(Employee employee) {
