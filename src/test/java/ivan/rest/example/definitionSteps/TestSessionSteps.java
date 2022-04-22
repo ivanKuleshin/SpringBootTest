@@ -9,6 +9,13 @@ import ivan.rest.example.util.session.SessionKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static ivan.rest.example.definitionSteps.EmployeeDefStep.employeeListTypeReference;
+import static ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
+
 @Slf4j
 public class TestSessionSteps extends SpringIntegrationTestConfiguration {
 
@@ -16,9 +23,23 @@ public class TestSessionSteps extends SpringIntegrationTestConfiguration {
     protected Session session;
 
     @Given("the '{sessionKey}' variable is updated by Employee entity in test session")
-    public void updateVariableInTestSession(SessionKey sessionKey, Employee employee){
+    public void updateVariableInTestSessionByEmployee(SessionKey sessionKey, Employee employee){
         session.checkIfExist(sessionKey);
         session.put(sessionKey, employee);
+    }
+
+    @Given("the '{sessionKey}' variable is created in test session")
+    public void updateVariableInTestSession(SessionKey sessionKey, Map<String, String> map){
+        session.put(sessionKey, map);
+    }
+
+    @Given("the entity is deleted from '{sessionKey}' list by id = {int} in test session")
+    public void deleteEntityFromTestSessionByParam(SessionKey sessionKey, int paramValue) {
+
+        List<Employee> updatedList = convertValueToList(session.get(sessionKey), employeeListTypeReference)
+                .stream().filter(x -> x.getId() == paramValue).collect(Collectors.toList());
+
+        session.put(sessionKey, updatedList);
     }
 
     @ParameterType(".*")

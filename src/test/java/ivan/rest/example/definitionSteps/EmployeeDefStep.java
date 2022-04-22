@@ -5,6 +5,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,6 +15,7 @@ import ivan.rest.example.clients.RestClient;
 import ivan.rest.example.clients.RestClient.RequestTypes;
 import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 import ivan.rest.example.exception.CustomRuntimeException;
+import ivan.rest.example.exceptions.TestExecutionException;
 import ivan.rest.example.model.Address;
 import ivan.rest.example.model.Employee;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +26,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.lang.management.ManagementFactory;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static ivan.rest.example.clients.RestClient.RequestTypes.*;
 import static ivan.rest.example.util.session.SessionKey.*;
-import static ivan.rest.example.util.testUtils.TestUtil.castCollectionTo;
-import static ivan.rest.example.util.testUtils.TestUtil.convertValue;
+import static ivan.rest.example.util.testUtils.TestUtil.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
@@ -40,7 +44,10 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
     @Autowired
     private RestClient restClient;
 
-    private final TypeReference<List<Employee>> employeeListTypeReference = new TypeReference<>() {
+    private static final int FIRST = 0;
+    private static final int STATUS_OK = 200;
+
+    static final TypeReference<List<Employee>> employeeListTypeReference = new TypeReference<>() {
     };
 
     private static final String ALL_VALUES = "$";
@@ -60,7 +67,7 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
 
     @After
     public void cleanUp() {
-        restTemplate.delete("/employee");
+        restClient.sendRequestWithoutParams(DELETE, "/employee").then().statusCode(STATUS_OK);
         session.clear();
     }
 
@@ -98,9 +105,13 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
 
     @Given("employees added to Employee rest service repository:")
     public void addListOfEmployees(List<Employee> employees) {
-        restTemplate.put("/employee/list", employees);
+        Response response = restClient.sendRequestWithBody(PUT, "/employee/list", employees);
 
-        employees.sort(Comparator.comparing(Employee::getId));
+        if (response.statusCode() != STATUS_OK) {
+            log.info("Response is: " + response.prettyPrint());
+            throw new TestExecutionException("Test data eas NOT added to service repository");
+        }
+
         session.put(EXPECTED_RESULT, employees);
     }
 
@@ -119,17 +130,30 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
     }
 
     @When("the {string} request is sent to the {string} endpoint with params:")
-    public void theGETRequestIsSentToTheEmployeeEndpointWithParams(String requestTypeStr, String endpoint, Map<String, String> params) {
+    public void theRequestIsSentToTheEmployeeEndpointWithParams(String requestTypeStr, String endpoint, Map<String, String> params) {
         RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         var response = restClient.sendRequestWithParams(requestType, endpoint, params);
-//        .jsonPath().get("$");
         session.put(RESPONSE, response);
     }
 
     @When("the {string} request is sent to the {string} endpoint without params")
-    public void theGETRequestIsSentToTheEmployeeEndpointWithoutParams(String requestTypeStr, String endpoint) {
+    public void theRequestIsSentToTheEmployeeEndpointWithoutParams(String requestTypeStr, String endpoint) {
         RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         var response = restClient.sendRequestWithoutParams(requestType, endpoint);
+        session.put(RESPONSE, response);
+    }
+
+    @When("the {string} request is sent to the {string} endpoint with body")
+    public void theRequestIsSentToTheEmployeeEndpointWithBody(String requestTypeStr, String endpoint, List<Map<String, String>> requestBody) {
+        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
+        Response response;
+
+        if (requestBody.size() == 1) {
+            response = restClient.sendRequestWithBody(requestType, endpoint, requestBody.get(FIRST));
+        } else {
+            response = restClient.sendRequestWithBody(requestType, endpoint, requestBody);
+        }
+
         session.put(RESPONSE, response);
     }
 
@@ -143,13 +167,46 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
                 .isEqualTo(expectedStatusCode);
     }
 
+    @And("error message contains: {string}")
+    public void verifyErrorMessage(String expectedMessage) {
+        Response response = session.get(RESPONSE, Response.class);
+        String actualMessage = response.getBody().jsonPath().getMap(ALL_VALUES).get("message").toString();
+
+        assertThat(actualMessage).as("Error message mismatch!").contains(expectedMessage);
+    }
+
     @Then("retrieved data is equal to added data")
-    public void retrievedDataIsEqualToAddedData() {
-        List<Employee> actualResult = convertValue(session.get(RESPONSE, Response.class).jsonPath().get(ALL_VALUES),
-                employeeListTypeReference);
-        List<Employee> expectedResult = convertValue(session.get(EXPECTED_RESULT), employeeListTypeReference);
+    public void verifyRetrievedDataIsEqualToAddedData() {
+        var responseBody = session.get(RESPONSE, Response.class).jsonPath().get(ALL_VALUES);
+
+        List<Employee> actualResult = convertValueToList(responseBody, employeeListTypeReference);
+        List<Employee> expectedResult = convertValueToList(session.get(EXPECTED_RESULT), employeeListTypeReference);
+        expectedResult = actualResult.stream().filter(expectedResult::contains).collect(Collectors.toList());
 
         assertThat(actualResult).isEqualTo(expectedResult);
+    }
+
+    @Then("employee with {int} ID has been added to the repository correctly")
+    public void verifyEmployeeHasBeenAdded(int employeeId){
+        Response response = restClient.sendRequestWithParams(GET, "/employee/{id}", Map.of("id", employeeId))
+                .then().statusCode(STATUS_OK).extract().response();
+        Employee actualEmployee = castMapToObject(response.jsonPath().get(ALL_VALUES), Employee.class);
+
+        Employee expectedEmployee = castMapToObject(session.get(EXPECTED_RESULT), Employee.class);
+
+        assertThat(actualEmployee).isEqualTo(expectedEmployee);
+    }
+
+    @Then("employee with id {int} is deleted from the repository")
+    public void verifyEmployeeIsDeleted(int employeeId) {
+        List<Employee> actualResponseList = convertValueToList(restClient
+                        .sendRequestWithoutParams(GET, "/employee")
+                        .jsonPath().getList(ALL_VALUES),
+                employeeListTypeReference);
+
+        assertThat(actualResponseList.stream().anyMatch(employee -> employee.getId() == employeeId))
+                .as("Employee with id %s was NOT deleted!", employeeId)
+                .isFalse();
     }
 
     @When("we send {string} request to the {string} endpoint with {int} id")
@@ -164,7 +221,7 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
         Employee actual = Objects.requireNonNull(responseEntity.getBody());
         session.put(ACTUAL_RESULT, actual);
 
-        Employee expected = castCollectionTo(Employee.class, session.get(EXPECTED_LIST, List.class))
+        Employee expected = convertValueToList(session.get(EXPECTED_LIST), employeeListTypeReference)
                 .stream().filter(employee -> employee.getId() == id).findFirst()
                 .orElseThrow(() -> new CustomRuntimeException(String.format("Expected employee not found with id = %s", id)));
 

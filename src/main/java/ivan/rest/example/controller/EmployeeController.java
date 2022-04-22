@@ -1,10 +1,13 @@
 package ivan.rest.example.controller;
 
+import ivan.rest.example.exception.CustomRuntimeException;
+import ivan.rest.example.model.Address;
 import ivan.rest.example.model.Employee;
 import ivan.rest.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.Objects.isNull;
@@ -21,15 +24,26 @@ public class EmployeeController {
         return employeeService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public Employee getById(@PathVariable Integer id) {
-        return employeeService.getById(id);
+    @GetMapping("/{employeeId}")
+    public Employee getById(@PathVariable Integer employeeId) {
+        return employeeService.getById(employeeId);
     }
 
     @PutMapping
     public String add(@RequestBody Employee employee) {
         employeeService.add(employee);
         return String.format("Employee with id = %s has been added!", employee.getId());
+    }
+
+    @PostMapping("/address/{employeeId}")
+    public @ResponseBody Employee addAddress(@PathVariable Integer employeeId, @RequestBody Address address) {
+        Employee currentEmployee = employeeService.getById(employeeId);
+        if (currentEmployee.getAddress().isEmpty()) {
+            currentEmployee.setAddress(address);
+            return currentEmployee;
+        } else {
+            throw new CustomRuntimeException("Employee already has an address. Please use update instead of create.");
+        }
     }
 
     @PutMapping("/list")
@@ -39,7 +53,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/update")
-    public Employee updateEmployee(@RequestBody Employee employee) {
+    public Employee updateEmployee(@Valid @RequestBody Employee employee) {
         Employee employeeFromDB = employeeService.getById(employee.getId());
 
         Employee employeeToUpdate = Employee.builder()

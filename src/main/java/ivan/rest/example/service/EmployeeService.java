@@ -27,7 +27,7 @@ public class EmployeeService {
         return employeeMap.getOrDefault(id, null);
     }
 
-    public Employee update(Employee employee){
+    public Employee update(Employee employee) {
         if (isNull(employee) || isNull(employee.getId())) {
             throw new CustomRuntimeException("Employee cannot be null");
         } else if (!employeeMap.containsKey(employee.getId())) {
@@ -36,7 +36,6 @@ public class EmployeeService {
         } else {
             employeeMap.put(employee.getId(), employee);
         }
-
         return employee;
     }
 

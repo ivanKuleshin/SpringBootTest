@@ -1,6 +1,6 @@
 @employee
-Feature: Employee rest service test feature
-  This feature contains BDD scenarios for Employee rest service
+Feature: Get All Employees from the repository
+  This feature contains BDD scenarios for Get All Employees from the repository
 
   Background:
     Given User sees that our controller is not NULL

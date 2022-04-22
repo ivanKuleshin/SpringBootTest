@@ -1,17 +1,17 @@
 package ivan.rest.example.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class Employee implements Comparable<Employee> {
 
-//    @NotNull
+    @NotNull
     private Integer id;
     private String name;
     private String passportNumber;
