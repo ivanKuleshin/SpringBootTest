@@ -34,7 +34,8 @@ import java.util.stream.Stream;
 
 import static ivan.rest.example.clients.RestClient.RequestTypes.*;
 import static ivan.rest.example.util.session.SessionKey.*;
-import static ivan.rest.example.util.testUtils.TestUtil.*;
+import static ivan.rest.example.util.testUtils.TestUtil.castMapToObject;
+import static ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j

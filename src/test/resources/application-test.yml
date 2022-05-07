@@ -1,0 +1,18 @@
+spring:
+  main:
+  banner-mode: off
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: ERROR
+
+employee:
+  service:
+    host: localhost
+
+ivan:
+  test:
+    name: Ivan

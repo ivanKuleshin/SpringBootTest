@@ -12,6 +12,6 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "ivan.rest.example.definitionSteps",
-        tags = "@employee or @smoke")
+        tags = "@employee or @test")
 public class RunEmployeeTest extends SpringIntegrationTestConfiguration {
 }

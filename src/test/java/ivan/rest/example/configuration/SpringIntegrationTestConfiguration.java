@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.annotation.PostConstruct;
 
@@ -20,10 +21,15 @@ import javax.annotation.PostConstruct;
  * <p>
  * To make Cucumber aware of your test configuration you can annotate a configuration class with @CucumberContextConfiguration
  * <p>
- * The @ContextConfiguration - needs to be clarified
+ * The @ContextConfiguration(loader = SpringBootContextLoader.class) - loads an ApplicationContext for Spring integration test.
+ * <p>
+ * The  @TestConfiguration - We use @TestConfiguration to modify Spring’s application context during test runtime.
+ * We can use it to override certain bean definitions, for example to replace real beans with fake beans or
+ * to change the configuration of a bean to make it better testable.
  **/
-@SpringBootTest(classes = EmployeeRestServiceNoDbApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles(value = "test")
 @CucumberContextConfiguration
+@SpringBootTest(classes = EmployeeRestServiceNoDbApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class SpringIntegrationTestConfiguration {
 
     public static String baseUrl;
