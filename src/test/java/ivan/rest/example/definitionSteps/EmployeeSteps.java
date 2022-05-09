@@ -40,7 +40,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
 @CucumberContextConfiguration
-public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
+public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     @Autowired
     private RestClient restClient;
@@ -59,11 +59,6 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
         long threadId = Thread.currentThread().getId();
         String processName = ManagementFactory.getRuntimeMXBean().getName();
         log.info(String.format("Started in thread: %s, in JVM: %s", threadId, processName));
-    }
-
-    @Before(value = "@testData")
-    public void setUp() {
-        System.out.println("This methods performs only for the Scenarios with @testData");
     }
 
     @After
@@ -101,7 +96,7 @@ public class EmployeeDefStep extends SpringIntegrationTestConfiguration {
         ResponseEntity<Employee> forEntity = restTemplate.getForEntity("/employee/" + employee.getId(), Employee.class);
 
         Assert.assertTrue(forEntity.getStatusCode().is2xxSuccessful());
-        log.info("Test result {}", forEntity.toString());
+        log.info("Test result {}", forEntity);
     }
 
     @Given("employees added to Employee rest service repository:")

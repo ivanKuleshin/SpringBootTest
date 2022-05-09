@@ -10,9 +10,16 @@ Feature: Delete Employee by ID
       | 110 | John | JN789123       | School     |
       | 111 | John | JN789123       | School     |
     And the entity is deleted from 'EXPECTED_RESULT' list by id = <employeeId> in test session
+
+#    configure WireMock
+    And the 'STUB_REQUEST' variable is initialized in test session with "null" value
+    And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
+    And wiremock stub is set for DELETE request with "/externalClient/<employeeId>" URL
+
     When the 'DELETE' request is sent to the '/employee/{id}' endpoint with params:
       | id | <employeeId> |
     Then the status code is 200
+    And wiremock stub received DELETE request with "/externalClient/<employeeId>" URL
     And employee with id <employeeId> is deleted from the repository
 
     Examples:

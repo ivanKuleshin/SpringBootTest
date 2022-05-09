@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static ivan.rest.example.definitionSteps.EmployeeDefStep.employeeListTypeReference;
+import static ivan.rest.example.definitionSteps.EmployeeSteps.employeeListTypeReference;
 import static ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
 
 @Slf4j
@@ -31,6 +31,11 @@ public class TestSessionSteps extends SpringIntegrationTestConfiguration {
     @Given("the '{sessionKey}' variable is created in test session")
     public void updateVariableInTestSession(SessionKey sessionKey, Map<String, String> map){
         session.put(sessionKey, map);
+    }
+
+    @Given("the '{sessionKey}' variable is initialized in test session with {string} value")
+    public void initializeVariableInTestSession(SessionKey sessionKey, String value){
+        session.put(sessionKey, value);
     }
 
     @Given("the entity is deleted from '{sessionKey}' list by id = {int} in test session")

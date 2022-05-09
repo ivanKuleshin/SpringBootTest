@@ -16,7 +16,18 @@ public class TestUtil {
         }
     }
 
-    public static <T> T castMapToObject(Object mapToCast, Class<T> classToCast){
+    public static <T> T castMapToObject(Object mapToCast, Class<T> classToCast) {
         return objectMapper.convertValue(mapToCast, classToCast);
+    }
+
+    public static String invalidateParam(String param) {
+        switch (param) {
+            case "empty":
+                return "";
+            case "blank":
+                return "    ";
+            default:
+                return null;
+        }
     }
 }

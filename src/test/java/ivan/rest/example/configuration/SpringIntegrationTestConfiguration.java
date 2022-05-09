@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,7 @@ import javax.annotation.PostConstruct;
 @ActiveProfiles(value = "test")
 @CucumberContextConfiguration
 @SpringBootTest(classes = EmployeeRestServiceNoDbApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWireMock(port = 0)
 public abstract class SpringIntegrationTestConfiguration {
 
     public static String baseUrl;

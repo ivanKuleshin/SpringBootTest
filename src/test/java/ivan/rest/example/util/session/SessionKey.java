@@ -5,5 +5,7 @@ public enum SessionKey {
     ACTUAL_RESULT,
     EXPECTED_LIST,
     ACTUAL_LIST,
-    RESPONSE
+    RESPONSE,
+    STUB_REQUEST,
+    STUB_RESPONSE
 }

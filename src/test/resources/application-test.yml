@@ -16,3 +16,6 @@ employee:
 ivan:
   test:
     name: Ivan
+
+clients:
+  externalClient.url: http://localhost:${wiremock.server.port}/externalClient/

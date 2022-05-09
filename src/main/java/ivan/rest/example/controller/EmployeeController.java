@@ -1,5 +1,6 @@
 package ivan.rest.example.controller;
 
+import ivan.rest.example.client.ExternalClient;
 import ivan.rest.example.exception.CustomRuntimeException;
 import ivan.rest.example.model.Address;
 import ivan.rest.example.model.Employee;
@@ -18,6 +19,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    ExternalClient externalClient;
 
     @GetMapping
     public List<Employee> getAllEmployees() {
@@ -70,6 +73,7 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public String removeEmployeeById(@PathVariable Integer id) {
         employeeService.deleteById(id);
+        externalClient.deleteRequestToExternalService(id);
         return String.format("Employee with id = %s has been successfully deleted!", id);
     }
 

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
-public class testDefinitionSteps {
+public class TestSteps {
 
     @Value("${ivan.test.name}")
     private String myName;
