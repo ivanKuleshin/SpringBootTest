@@ -1,4 +1,5 @@
 @employee
+@resetWireMock
 Feature: Delete Employee by ID
   This feature contains BDD scenarios for Get Employee from the repository
 

@@ -21,17 +21,37 @@ public class WireMockClient {
     public void publishMapping(RequestTypes requestType, String url, String requestBody, String responseBody) {
         switch (requestType) {
             case POST:
-                WireMock.stubFor(WireMock.post(url)
-                        .withRequestBody(WireMock.equalToJson(requestBody, true, false))
-                        .willReturn(WireMock.okJson(responseBody)));
+                WireMock.stubFor(post(url)
+                        .withRequestBody(equalToJson(requestBody, true, false))
+                        .willReturn(okJson(responseBody)));
                 break;
             case PUT:
-                WireMock.stubFor(WireMock.put(url)
-                        .withRequestBody(WireMock.equalToJson(requestBody, true, false))
-                        .willReturn(WireMock.okJson(responseBody)));
+                WireMock.stubFor(put(url)
+                        .withRequestBody(equalToJson(requestBody, true, false))
+                        .willReturn(okJson(responseBody)));
                 break;
             case DELETE:
-                WireMock.stubFor(WireMock.delete(url));
+                WireMock.stubFor(delete(url));
+                break;
+            default:
+                throw new TestExecutionException("Invalid HTTP method received!");
+        }
+    }
+
+    public void publishMappingWithBody(RequestTypes requestType, String url, String requestBody, String responseBody) {
+        switch (requestType) {
+            case POST:
+                WireMock.stubFor(post(url)
+                        .withRequestBody(equalToJson(requestBody, true, false))
+                        .willReturn(okJson(responseBody)));
+                break;
+            case PUT:
+                WireMock.stubFor(put(url)
+                        .withRequestBody(equalToJson(requestBody, true, false))
+                        .willReturn(okJson(responseBody)));
+                break;
+            case DELETE:
+                WireMock.stubFor(delete(url));
                 break;
             default:
                 throw new TestExecutionException("Invalid HTTP method received!");
@@ -44,7 +64,7 @@ public class WireMockClient {
                 WireMock.verify(1, deleteRequestedFor(urlEqualTo(url)));
                 break;
             case PUT:
-                WireMock.verify(putRequestedFor(urlEqualTo(url)));
+                WireMock.verify(1, putRequestedFor(urlEqualTo(url)));
                 break;
         }
     }
