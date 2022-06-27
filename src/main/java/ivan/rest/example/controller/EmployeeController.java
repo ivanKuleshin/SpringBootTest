@@ -24,12 +24,18 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getAllEmployees() {
+        externalClient.getAllEmployees();
         return employeeService.getAll();
     }
 
     @GetMapping("/{employeeId}")
     public Employee getById(@PathVariable Integer employeeId) {
-        return employeeService.getById(employeeId);
+        String employeeHash = externalClient.getEmployeeHash(employeeId);
+
+        Employee employee = employeeService.getById(employeeId);
+        employee.setEmployeeHash(employeeHash);
+
+        return employee;
     }
 
     @PutMapping

@@ -1,4 +1,5 @@
 @employee
+@resetWireMock
 Feature: Get All Employees from the repository
   This feature contains BDD scenarios for Get All Employees from the repository
 
@@ -12,6 +13,12 @@ Feature: Get All Employees from the repository
       | 108 | Tom  | TM123456       | University |
       | 109 | Sam  | SM456789       | College    |
       | 110 | John | JN789123       | School     |
+
+#    configure WireMock
+    And the 'STUB_REQUEST' variable is initialized in test session with "null" value
+    And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
+    And wiremock stub is set for GET request with "/externalClient/" URL
+
     When the 'GET' request is sent to the '/employee' endpoint without params
     Then the status code is 200
     And retrieved data is equal to added data
@@ -24,6 +31,12 @@ Feature: Get All Employees from the repository
       | 112 | Sam  |                | College    |
       | 113 | John | JN789123       |            |
       | 114 | Max  | MX159753       | School     |
+
+#    configure WireMock
+    And the 'STUB_REQUEST' variable is initialized in test session with "null" value
+    And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
+    And wiremock stub is set for GET request with "/externalClient/" URL
+
     When the 'GET' request is sent to the '/employee' endpoint without params
     Then the status code is 200
     And retrieved data is equal to added data

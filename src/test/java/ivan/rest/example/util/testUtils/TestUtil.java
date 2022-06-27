@@ -26,8 +26,10 @@ public class TestUtil {
                 return "";
             case "blank":
                 return "    ";
-            default:
+            case "null":
                 return null;
+            default:
+                return param;
         }
     }
 }

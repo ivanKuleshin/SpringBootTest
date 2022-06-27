@@ -17,6 +17,11 @@ Feature: Delete Employee by ID
     And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
     And wiremock stub is set for DELETE request with "/externalClient/<employeeId>" URL
 
+    And the 'STUB_REQUEST' variable is initialized in test session with 'null' value
+    And the 'STUB_RESPONSE' variable is created in test session
+      | employeeHashValue | 12345 |
+    And wiremock stub is set for GET request with "/externalClient/" URL
+
     When the 'DELETE' request is sent to the '/employee/{id}' endpoint with params:
       | id | <employeeId> |
     Then the status code is 200

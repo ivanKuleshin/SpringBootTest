@@ -1,8 +1,10 @@
 package ivan.rest.example.client;
 
-import io.restassured.RestAssured;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import java.util.Optional;
+
+import static io.restassured.RestAssured.given;
 
 @Component
 public class ExternalClient {
@@ -11,6 +13,16 @@ public class ExternalClient {
     private String url;
 
     public void deleteRequestToExternalService(Integer id) {
-        RestAssured.given().log().all().delete(url + id).then().statusCode(200);
+        given().log().all().delete(url + id).then().statusCode(200);
+    }
+
+    public void getAllEmployees(){
+        given().log().all().get(url).then().statusCode(200);
+    }
+
+    public String getEmployeeHash(Integer employeeId) {
+        String hash = given().log().all().get(url + employeeId).jsonPath().getString("employeeHashValue");
+
+        return Optional.ofNullable(hash).orElse("").isEmpty() ? null : employeeId + hash;
     }
 }

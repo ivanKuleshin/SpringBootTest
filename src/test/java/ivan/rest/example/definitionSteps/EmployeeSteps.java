@@ -79,6 +79,7 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
                         .country(row.get("address.country"))
                         .zip(row.get("address.zip"))
                         .build())
+                .employeeHash(row.get("employeeHash"))
                 .build();
     }
 
@@ -86,7 +87,7 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
     public Employee singleEmployee(String employeeParams) {
         List<String> params = Stream.of(employeeParams.split(",")).map(String::trim).collect(Collectors.toList());
 
-        return new Employee(Integer.valueOf(params.get(0)), params.get(1), params.get(2), params.get(3), null);
+        return new Employee(Integer.valueOf(params.get(0)), params.get(1), params.get(2), params.get(3), null, null);
     }
 
     @Given("Employee '{singleEmployee}' added to Employee rest service repository")
@@ -195,9 +196,10 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     @Then("employee with id {int} is deleted from the repository")
     public void verifyEmployeeIsDeleted(int employeeId) {
-        List<Employee> actualResponseList = convertValueToList(restClient
-                        .sendRequestWithoutParams(GET, "/employee")
-                        .jsonPath().getList(ALL_VALUES),
+        Response response = restClient.sendRequestWithoutParams(GET, "/employee")
+                .then().statusCode(STATUS_OK).extract().response();
+
+        List<Employee> actualResponseList = convertValueToList(response.jsonPath().get(ALL_VALUES),
                 employeeListTypeReference);
 
         assertThat(actualResponseList.stream().anyMatch(employee -> employee.getId() == employeeId))

@@ -15,7 +15,7 @@ public class WireMockClient {
         WireMock.reset();
     }
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @SneakyThrows
     public void publishMapping(RequestTypes requestType, String url, String requestBody, String responseBody) {
@@ -32,6 +32,10 @@ public class WireMockClient {
                 break;
             case DELETE:
                 WireMock.stubFor(delete(url));
+                break;
+            case GET:
+                WireMock.stubFor(get(url)
+                        .willReturn(okJson(responseBody)));
                 break;
             default:
                 throw new TestExecutionException("Invalid HTTP method received!");

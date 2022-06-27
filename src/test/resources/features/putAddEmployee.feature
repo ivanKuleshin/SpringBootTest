@@ -1,13 +1,21 @@
 @employee
+@resetWireMock
 Feature: Add Employee into repository
   This feature contains BDD scenarios for Add Employee into the repository
 
   Scenario Outline: 01.1 | Add employee into the repository - happy path
     Given the 'EXPECTED_RESULT' variable is created in test session
-      | id             | <id>             |
-      | passportNumber | <passportNumber> |
-      | education      | <education>      |
-      | name           | <name>           |
+      | id                | <id>             |
+      | passportNumber    | <passportNumber> |
+      | education         | <education>      |
+      | name              | <name>           |
+
+#    configure WireMock
+    And the 'STUB_REQUEST' variable is initialized in test session with 'null' value
+    And the 'STUB_RESPONSE' variable is created in test session
+      | employeeHash | <hashValue> |
+    And wiremock stub is set for GET request with "/externalClient/<id>" URL
+
     When the 'PUT' request is sent to the '/employee' endpoint with body
       | id   | passportNumber   | education   | name   |
       | <id> | <passportNumber> | <education> | <name> |
@@ -15,8 +23,8 @@ Feature: Add Employee into repository
     And employee with <id> ID has been added to the repository correctly
 
     Examples:
-      | id  | name    | education | passportNumber |
-      | 115 | testTom | College   | TM14852Test    |
+      | id  | name    | education | passportNumber | hashValue |
+      | 115 | testTom | College   | TM14852Test    | 12345     |
 
   Scenario: 01.2 | Add employee into the repository when Employee is already exists
     Given employees added to Employee rest service repository:

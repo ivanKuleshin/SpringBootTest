@@ -17,6 +17,7 @@ public class Employee implements Comparable<Employee> {
     private String passportNumber;
     private String education;
     private Address address;
+    private String employeeHash;
 
     @Override
     public int compareTo(Employee employee) {
