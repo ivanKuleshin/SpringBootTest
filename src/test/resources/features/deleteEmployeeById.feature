@@ -17,6 +17,7 @@ Feature: Delete Employee by ID
     And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
     And wiremock stub is set for DELETE request with "/externalClient/<employeeId>" URL
 
+#    configure WireMock
     And the 'STUB_REQUEST' variable is initialized in test session with 'null' value
     And the 'STUB_RESPONSE' variable is created in test session
       | employeeHashValue | 12345 |

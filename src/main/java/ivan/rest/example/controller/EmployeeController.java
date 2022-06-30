@@ -48,7 +48,7 @@ public class EmployeeController {
     public @ResponseBody Employee addAddress(@PathVariable Integer employeeId, @RequestBody Address address) {
         Employee currentEmployee = employeeService.getById(employeeId);
         if (currentEmployee.getAddress().isEmpty()) {
-            currentEmployee.setAddress(address);
+            currentEmployee.setAddress(externalClient.addAddress(employeeId, address));
             return currentEmployee;
         } else {
             throw new CustomRuntimeException("Employee already has an address. Please use update instead of create.");

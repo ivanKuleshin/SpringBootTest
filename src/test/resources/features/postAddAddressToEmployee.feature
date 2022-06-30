@@ -9,6 +9,18 @@ Feature: Add Employee Address into repository
     And the 'EXPECTED_RESULT' variable is updated by Employee entity in test session
       | id   | name    | passportNumber   | education     | address.city | address.country | address.zip |
       | <id> | <name>  | <passportNumber> | <education>   | <city>       | <country>       | <zip>       |
+
+#    configure WireMock
+    And the 'STUB_REQUEST' variable is created in test session
+      | city    | <city>    |
+      | country | <country> |
+      | zip     | <zip>     |
+    And the 'STUB_RESPONSE' variable is created in test session
+      | city    | <city>    |
+      | country | <country> |
+      | zip     | <zip>     |
+    And wiremock stub is set for POST request with "/externalClient/address/<id>" URL
+
     When the 'POST' request is sent to the '/employee/address/<id>' endpoint with body
       | city   | country    | zip   |
       | <city> | <country>  | <zip> |
