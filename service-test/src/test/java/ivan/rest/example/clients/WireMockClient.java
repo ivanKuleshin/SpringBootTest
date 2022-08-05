@@ -1,6 +1,5 @@
 package ivan.rest.example.clients;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import ivan.rest.example.clients.RestClient.RequestTypes;
 import ivan.rest.example.exceptions.TestExecutionException;
@@ -14,8 +13,6 @@ public class WireMockClient {
     public void resetWireMock() {
         WireMock.reset();
     }
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @SneakyThrows
     public void publishMapping(RequestTypes requestType, String url, String requestBody, String responseBody) {
@@ -36,26 +33,6 @@ public class WireMockClient {
             case GET:
                 WireMock.stubFor(get(url)
                         .willReturn(okJson(responseBody)));
-                break;
-            default:
-                throw new TestExecutionException("Invalid HTTP method received!");
-        }
-    }
-
-    public void publishMappingWithBody(RequestTypes requestType, String url, String requestBody, String responseBody) {
-        switch (requestType) {
-            case POST:
-                WireMock.stubFor(post(url)
-                        .withRequestBody(equalToJson(requestBody, true, false))
-                        .willReturn(okJson(responseBody)));
-                break;
-            case PUT:
-                WireMock.stubFor(put(url)
-                        .withRequestBody(equalToJson(requestBody, true, false))
-                        .willReturn(okJson(responseBody)));
-                break;
-            case DELETE:
-                WireMock.stubFor(delete(url));
                 break;
             default:
                 throw new TestExecutionException("Invalid HTTP method received!");
