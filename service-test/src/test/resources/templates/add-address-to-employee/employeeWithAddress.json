@@ -1,0 +1,11 @@
+{
+  "id" : 108,
+  "name" : "Tom",
+  "passportNumber" : "TM123456",
+  "education" : "University",
+  "address" : {
+    "city" : "Kyiv",
+    "country" : "Ukraine",
+    "zip" : "044"
+  }
+}

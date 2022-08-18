@@ -19,6 +19,7 @@ import ivan.rest.example.exception.CustomRuntimeException;
 import ivan.rest.example.exceptions.TestExecutionException;
 import ivan.rest.example.model.Address;
 import ivan.rest.example.model.Employee;
+import ivan.rest.example.readFileHelper.ReadFileHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
         if (response.statusCode() != STATUS_OK) {
             log.info("Response is: " + response.asPrettyString());
-            throw new TestExecutionException("Test data eas NOT added to service repository");
+            throw new TestExecutionException("Test data was NOT added to service repository");
         }
 
         session.put(EXPECTED_RESULT, employees);
@@ -91,21 +92,18 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     @When("the {httpMethod} request is sent to the {string} endpoint with params:")
     public void theRequestIsSentToTheEmployeeEndpointWithParams(Method requestType, String endpoint, Map<String, String> params) {
-//        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         var response = restClient.sendRequestWithParams(requestType, endpoint, params);
         session.put(RESPONSE, response);
     }
 
     @When("the {httpMethod} request is sent to the {string} endpoint without params")
     public void theRequestIsSentToTheEmployeeEndpointWithoutParams(Method requestType, String endpoint) {
-//        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         var response = restClient.sendRequestWithoutParams(requestType, endpoint);
         session.put(RESPONSE, response);
     }
 
     @When("the {httpMethod} request is sent to the {string} endpoint with body")
     public void theRequestIsSentToTheEmployeeEndpointWithBody(Method requestType, String endpoint, List<Map<String, String>> requestBody) {
-//        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         Response response;
 
         if (requestBody.size() == 1) {
@@ -200,4 +198,6 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
         assertThat(controller).isNotNull();
         log.info("Controller checking...");
     }
+
+
 }

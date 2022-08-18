@@ -21,15 +21,11 @@ public class TestUtil {
     }
 
     public static String invalidateParam(String param) {
-        switch (param) {
-            case "empty":
-                return "";
-            case "blank":
-                return "    ";
-            case "null":
-                return null;
-            default:
-                return param;
-        }
+        return switch (param) {
+            case "empty" -> "";
+            case "blank" -> "    ";
+            case "null" -> null;
+            default -> param;
+        };
     }
 }

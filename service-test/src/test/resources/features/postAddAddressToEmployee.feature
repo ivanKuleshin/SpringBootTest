@@ -6,9 +6,8 @@ Feature: Add Employee Address into repository
     Given employees added to Employee rest service repository:
       | id   | name   | passportNumber   | education   |
       | <id> | <name> | <passportNumber> | <education> |
-    And the 'EXPECTED_RESULT' variable is updated by Employee entity in test session
-      | id   | name    | passportNumber   | education     | address.city | address.country | address.zip |
-      | <id> | <name>  | <passportNumber> | <education>   | <city>       | <country>       | <zip>       |
+
+    And the 'EXPECTED_RESULT' variable is created in test session from "employeeWithAddress" file with "add-address-to-employee" template
 
 #    configure WireMock
     And the 'STUB_REQUEST' variable is created in test session
