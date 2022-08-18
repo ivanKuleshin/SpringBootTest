@@ -21,7 +21,7 @@ Feature: Add Employee Address into repository
       | zip     | <zip>     |
     And wiremock stub is set for POST request with "/externalClient/address/<id>" URL
 
-    When the 'POST' request is sent to the '/employee/address/<id>' endpoint with body
+    When the POST request is sent to the '/employee/address/<id>' endpoint with body
       | city   | country    | zip   |
       | <city> | <country>  | <zip> |
     Then the status code is 200
@@ -35,7 +35,7 @@ Feature: Add Employee Address into repository
     Given employees added to Employee rest service repository:
       | id   | name   | passportNumber   | education   | address.city | address.country | address.zip |
       | <id> | <name> | <passportNumber> | <education> | <city>       | <country>       | <zip>       |
-    When the 'POST' request is sent to the '/employee/address/<id>' endpoint with body
+    When the POST request is sent to the '/employee/address/<id>' endpoint with body
       | city   | country   | zip   |
       | <city> | <country> | <zip> |
     Then the status code is 500

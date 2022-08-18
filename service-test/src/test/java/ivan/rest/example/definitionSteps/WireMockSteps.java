@@ -23,11 +23,6 @@ public class WireMockSteps {
     @Autowired
     ObjectMapper objectMapper;
 
-    @ParameterType(value = ".*")
-    public RequestTypes requestType(String requestType) {
-        return RequestTypes.valueOf(requestType);
-    }
-
     @SneakyThrows
     @Given("wiremock stub is set for {requestType} request with {string} URL")
     public void initializeWireMockStub(RequestTypes requestType, String url) {
@@ -39,6 +34,6 @@ public class WireMockSteps {
 
     @Then("wiremock stub received {requestType} request with {string} URL")
     public void verifyStub(RequestTypes requestType, String url){
-        wireMockClient.verifyMapping(requestType, url);
+        wireMockClient.verifyMapping(requestType, url, 1);
     }
 }

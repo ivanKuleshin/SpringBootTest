@@ -23,7 +23,7 @@ Feature: Delete Employee by ID
       | employeeHashValue | 12345 |
     And wiremock stub is set for GET request with "/externalClient/" URL
 
-    When the 'DELETE' request is sent to the '/employee/{id}' endpoint with params:
+    When the DELETE request is sent to the '/employee/{id}' endpoint with params:
       | id | <employeeId> |
     Then the status code is 200
     And wiremock stub received DELETE request with "/externalClient/<employeeId>" URL

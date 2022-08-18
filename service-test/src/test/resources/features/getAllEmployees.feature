@@ -19,7 +19,7 @@ Feature: Get All Employees from the repository
     And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
     And wiremock stub is set for GET request with "/externalClient/" URL
 
-    When the 'GET' request is sent to the '/employee' endpoint without params
+    When the GET request is sent to the '/employee' endpoint without params
     Then the status code is 200
     And retrieved data is equal to added data
 
@@ -37,7 +37,7 @@ Feature: Get All Employees from the repository
     And the 'STUB_RESPONSE' variable is initialized in test session with "null" value
     And wiremock stub is set for GET request with "/externalClient/" URL
 
-    When the 'GET' request is sent to the '/employee' endpoint without params
+    When the GET request is sent to the '/employee' endpoint without params
     Then the status code is 200
     And retrieved data is equal to added data
 

@@ -22,7 +22,7 @@ Feature: Get Employee by ID
 
     And wiremock stub is set for GET request with "/externalClient/108" URL
 
-    When the 'GET' request is sent to the '/employee/{id}' endpoint with params:
+    When the GET request is sent to the '/employee/{id}' endpoint with params:
       | id | 108 |
     Then the status code is 200
     And retrieved data is equal to added data
@@ -38,7 +38,7 @@ Feature: Get Employee by ID
       | employeeHashValue | 12345 |
     And wiremock stub is set for GET request with "/externalClient/1111" URL
 
-    When the 'GET' request is sent to the '/employee/{employeeId}' endpoint with params:
+    When the GET request is sent to the '/employee/{employeeId}' endpoint with params:
       | employeeId | 1111 |
     Then the status code is 500
     And error message contains: "Employee with such id = 1111 not found"

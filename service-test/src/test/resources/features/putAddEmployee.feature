@@ -16,7 +16,7 @@ Feature: Add Employee into repository
       | employeeHash | <hashValue> |
     And wiremock stub is set for GET request with "/externalClient/<id>" URL
 
-    When the 'PUT' request is sent to the '/employee' endpoint with body
+    When the PUT request is sent to the '/employee' endpoint with body
       | id   | passportNumber   | education   | name   |
       | <id> | <passportNumber> | <education> | <name> |
     Then the status code is 200
@@ -30,7 +30,7 @@ Feature: Add Employee into repository
     Given employees added to Employee rest service repository:
       | id  | name | passportNumber | education  |
       | 108 | Tom  | TM123456       | University |
-    When the 'PUT' request is sent to the '/employee' endpoint with body
+    When the PUT request is sent to the '/employee' endpoint with body
       | id   | passportNumber   | education   | name   |
       | 108  | TM123456         | University  | Tom    |
     Then the status code is 500

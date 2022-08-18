@@ -13,7 +13,7 @@ Feature: Update Employee by ID
     And the 'EXPECTED_RESULT' variable is updated by Employee entity in test session
       | id   | name    | passportNumber   | education     |
       | <id> | <name>  | <passportNumber> | <education>   |
-    When the 'PATCH' request is sent to the '/employee/update' endpoint with body
+    When the PATCH request is sent to the '/employee/update' endpoint with body
       | id    | passportNumber   | education   | name   |
       | <id>  | <passportNumber> | <education> | <name> |
     Then the status code is 200
@@ -24,7 +24,7 @@ Feature: Update Employee by ID
       | 115 | testTom | College   | TM14852Test    |
 
   Scenario: 01.2 | Update employee by invalid Id - negative path
-    When the 'PATCH' request is sent to the '/employee/update' endpoint with body
+    When the PATCH request is sent to the '/employee/update' endpoint with body
       | id    | passportNumber |
       |       | TM14852Test    |
     Then the status code is 500

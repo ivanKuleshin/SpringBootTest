@@ -10,6 +10,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
+import io.restassured.http.Method;
 import io.restassured.response.Response;
 import ivan.rest.example.clients.RestClient;
 import ivan.rest.example.clients.RestClient.RequestTypes;
@@ -47,48 +48,10 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     private static final int FIRST = 0;
     private static final int STATUS_OK = 200;
+    private static final String ALL_VALUES = "$";
 
     static final TypeReference<List<Employee>> employeeListTypeReference = new TypeReference<>() {
     };
-
-    private static final String ALL_VALUES = "$";
-
-    @Before
-    public void doSetup() {
-        // Was added to test the parallel execution:
-        long threadId = Thread.currentThread().getId();
-        String processName = ManagementFactory.getRuntimeMXBean().getName();
-        log.info(String.format("Started in thread: %s, in JVM: %s", threadId, processName));
-    }
-
-    @After
-    public void cleanUp() {
-        restClient.sendRequestWithoutParams(DELETE, "/employee").then().statusCode(STATUS_OK);
-        session.clear();
-    }
-
-    @DataTableType
-    public Employee employeeEntry(Map<String, String> row) {
-        return Employee.builder()
-                .id(Integer.valueOf(row.get("id")))
-                .name(row.get("name"))
-                .passportNumber(row.get("passportNumber"))
-                .education(row.get("education"))
-                .address(Address.builder()
-                        .city(row.get("address.city"))
-                        .country(row.get("address.country"))
-                        .zip(row.get("address.zip"))
-                        .build())
-                .employeeHash(row.get("employeeHash"))
-                .build();
-    }
-
-    @ParameterType(value = ".*")
-    public Employee singleEmployee(String employeeParams) {
-        List<String> params = Stream.of(employeeParams.split(",")).map(String::trim).collect(Collectors.toList());
-
-        return new Employee(Integer.valueOf(params.get(0)), params.get(1), params.get(2), params.get(3), null, null);
-    }
 
     @Given("Employee '{singleEmployee}' added to Employee rest service repository")
     public void addEmployee(Employee employee) {
@@ -102,10 +65,10 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     @Given("employees added to Employee rest service repository:")
     public void addListOfEmployees(List<Employee> employees) {
-        Response response = restClient.sendRequestWithBody(PUT, "/employee/list", employees);
+        Response response = restClient.sendRequestWithBody(Method.PUT, "/employee/list", employees);
 
         if (response.statusCode() != STATUS_OK) {
-            log.info("Response is: " + response.prettyPrint());
+            log.info("Response is: " + response.asPrettyString());
             throw new TestExecutionException("Test data eas NOT added to service repository");
         }
 
@@ -126,23 +89,23 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
         session.put(ACTUAL_LIST, actualList);
     }
 
-    @When("the {string} request is sent to the {string} endpoint with params:")
-    public void theRequestIsSentToTheEmployeeEndpointWithParams(String requestTypeStr, String endpoint, Map<String, String> params) {
-        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
+    @When("the {httpMethod} request is sent to the {string} endpoint with params:")
+    public void theRequestIsSentToTheEmployeeEndpointWithParams(Method requestType, String endpoint, Map<String, String> params) {
+//        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         var response = restClient.sendRequestWithParams(requestType, endpoint, params);
         session.put(RESPONSE, response);
     }
 
-    @When("the {string} request is sent to the {string} endpoint without params")
-    public void theRequestIsSentToTheEmployeeEndpointWithoutParams(String requestTypeStr, String endpoint) {
-        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
+    @When("the {httpMethod} request is sent to the {string} endpoint without params")
+    public void theRequestIsSentToTheEmployeeEndpointWithoutParams(Method requestType, String endpoint) {
+//        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         var response = restClient.sendRequestWithoutParams(requestType, endpoint);
         session.put(RESPONSE, response);
     }
 
-    @When("the {string} request is sent to the {string} endpoint with body")
-    public void theRequestIsSentToTheEmployeeEndpointWithBody(String requestTypeStr, String endpoint, List<Map<String, String>> requestBody) {
-        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
+    @When("the {httpMethod} request is sent to the {string} endpoint with body")
+    public void theRequestIsSentToTheEmployeeEndpointWithBody(Method requestType, String endpoint, List<Map<String, String>> requestBody) {
+//        RequestTypes requestType = RequestTypes.valueOf(requestTypeStr);
         Response response;
 
         if (requestBody.size() == 1) {
@@ -185,7 +148,7 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     @Then("employee with {int} ID has been added to the repository correctly")
     public void verifyEmployeeHasBeenAdded(int employeeId){
-        Response response = restClient.sendRequestWithParams(GET, "/employee/{id}", Map.of("id", employeeId))
+        Response response = restClient.sendRequestWithParams(Method.GET, "/employee/{id}", Map.of("id", employeeId))
                 .then().statusCode(STATUS_OK).extract().response();
         Employee actualEmployee = castMapToObject(response.jsonPath().get(ALL_VALUES), Employee.class);
 
@@ -196,7 +159,7 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
 
     @Then("employee with id {int} is deleted from the repository")
     public void verifyEmployeeIsDeleted(int employeeId) {
-        Response response = restClient.sendRequestWithoutParams(GET, "/employee")
+        Response response = restClient.sendRequestWithoutParams(Method.GET, "/employee")
                 .then().statusCode(STATUS_OK).extract().response();
 
         List<Employee> actualResponseList = convertValueToList(response.jsonPath().get(ALL_VALUES),
