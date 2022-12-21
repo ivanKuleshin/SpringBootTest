@@ -3,7 +3,7 @@ package ivan.rest.example.configuration;
 import io.cucumber.spring.CucumberContextConfiguration;
 import ivan.rest.example.EmployeeRestServiceNoDbApplication;
 import ivan.rest.example.controller.EmployeeController;
-import ivan.rest.example.util.session.Session;
+import ivan.rest.example.utils.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,6 +45,7 @@ public abstract class SpringIntegrationTestConfiguration {
 
     @LocalServerPort
     private int port;
+
     @Value("${employee.service.host}")
     private String employeeServiceHost;
 

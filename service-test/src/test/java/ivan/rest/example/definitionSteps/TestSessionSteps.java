@@ -4,9 +4,9 @@ import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 import ivan.rest.example.model.Employee;
-import ivan.rest.example.readFileHelper.ReadFileHelper;
-import ivan.rest.example.util.session.Session;
-import ivan.rest.example.util.session.SessionKey;
+import ivan.rest.example.utils.ReadFileUtils;
+import ivan.rest.example.utils.session.Session;
+import ivan.rest.example.utils.session.SessionKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ivan.rest.example.definitionSteps.EmployeeSteps.employeeListTypeReference;
-import static ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
+import static ivan.rest.example.utils.TestUtil.convertValueToList;
 
 @Slf4j
 public class TestSessionSteps extends SpringIntegrationTestConfiguration {
@@ -36,7 +36,7 @@ public class TestSessionSteps extends SpringIntegrationTestConfiguration {
 
     @Given("the '{sessionKey}' variable is created in test session from {string} file with {string} template")
     public void updateVariableInTestSession(SessionKey sessionKey, String fileName, String templateName){
-        Employee employee = ReadFileHelper.getRequestAs(templateName, fileName, Employee.class);
+        Employee employee = ReadFileUtils.getRequestAs(templateName, fileName, Employee.class);
 
         session.put(sessionKey, employee);
     }

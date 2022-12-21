@@ -1,18 +1,17 @@
 package ivan.rest.example.definitionSteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import ivan.rest.example.clients.RestClient.RequestTypes;
 import ivan.rest.example.clients.WireMockClient;
-import ivan.rest.example.util.session.Session;
+import ivan.rest.example.utils.session.Session;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static ivan.rest.example.util.session.SessionKey.STUB_REQUEST;
-import static ivan.rest.example.util.session.SessionKey.STUB_RESPONSE;
-import static ivan.rest.example.util.testUtils.TestUtil.invalidateParam;
+import static ivan.rest.example.utils.session.SessionKey.STUB_REQUEST;
+import static ivan.rest.example.utils.session.SessionKey.STUB_RESPONSE;
+import static ivan.rest.example.utils.TestUtil.invalidateParam;
 
 public class WireMockSteps {
 

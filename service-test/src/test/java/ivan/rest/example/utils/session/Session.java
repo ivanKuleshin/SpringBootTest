@@ -1,4 +1,4 @@
-package ivan.rest.example.util.session;
+package ivan.rest.example.utils.session;
 
 public interface Session {
     void put(SessionKey key, Object object);

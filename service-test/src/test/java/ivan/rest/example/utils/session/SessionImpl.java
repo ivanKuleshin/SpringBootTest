@@ -1,4 +1,4 @@
-package ivan.rest.example.util.session;
+package ivan.rest.example.utils.session;
 
 import ivan.rest.example.exception.CustomRuntimeException;
 import org.springframework.stereotype.Component;
