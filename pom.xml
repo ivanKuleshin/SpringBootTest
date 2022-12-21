@@ -6,8 +6,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.2</version>
-        <relativePath/> <!-- it's parent group for spring-boot-starter -->
+        <version>2.7.6</version>
+        <!-- it's parent group for spring-boot-starter -->
     </parent>
 
     <groupId>ivan.test</groupId>
@@ -24,13 +24,13 @@
         <cucumber.version>7.5.0</cucumber.version>
         <commons.version>3.12.0</commons.version>
         <aspectj.version>1.9.9</aspectj.version>
-        <allure.version>2.10.0</allure.version>
+        <allure.version>2.20.0</allure.version>
         <lombok.version>1.18.22</lombok.version>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.14.0</jackson.version>
 <!--        <spring.boot.starter.test.version>2.6.6</spring.boot.starter.test.version>-->
-        <rest.assured.version>5.1.1</rest.assured.version>
-        <wiremock.version>2.33.2</wiremock.version>
-        <spring.contract.wiremock.version>3.1.3</spring.contract.wiremock.version>
+        <rest.assured.version>5.3.0</rest.assured.version>
+        <wiremock.version>2.35.0</wiremock.version>
+        <spring.contract.wiremock.version>3.1.5</spring.contract.wiremock.version>
         <surefire.version>2.22.2</surefire.version>
 
         <include.class>EmployeeTestRunner.java</include.class>
@@ -42,75 +42,86 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <!-- <version>${spring.boot.starter.test.version}</version>-->
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <!-- <version>${spring.boot.starter.test.version}</version>-->
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>2.0.1.Final</version>
         </dependency>
-        <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <!-- <version>${spring.boot.starter.test.version}</version>-->
-        <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit4</artifactId>
             <version>${allure.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest.assured.version}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>org.apache.groovy</groupId>
-                    <artifactId>groovy</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.groovy</groupId>
-                    <artifactId>groovy-xml</artifactId>
-                </exclusion>
-            </exclusions>
+            <exclusion>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy-xml</artifactId>
+            </exclusion>
+        </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-jre8</artifactId>
             <version>${wiremock.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-wiremock</artifactId>
@@ -121,11 +132,11 @@
 
     <build>
         <plugins>
-<!--            Disable due to compilation problems-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -156,6 +167,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -164,6 +176,7 @@
                     <target>15</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
