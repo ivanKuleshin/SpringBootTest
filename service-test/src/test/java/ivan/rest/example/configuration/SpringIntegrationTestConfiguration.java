@@ -31,7 +31,7 @@ import javax.annotation.PostConstruct;
 @ActiveProfiles(value = "test")
 @CucumberContextConfiguration
 @SpringBootTest(classes = EmployeeRestServiceNoDbApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWireMock()
+@AutoConfigureWireMock(port = 0)
 @Import({SessionImpl.class, WireMockClient.class, RestClient.class})
 public abstract class SpringIntegrationTestConfiguration {
 
