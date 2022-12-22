@@ -18,4 +18,4 @@ ivan:
     name: Ivan
 
 clients:
-  externalClient.url: http://localhost:8080/externalClient/
+  externalClient.url: http://localhost:${wiremock.server.port}/externalClient/
