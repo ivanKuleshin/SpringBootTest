@@ -1,24 +1,24 @@
-package ivan.rest.example.definitionSteps;
+package test.java.ivan.rest.example.definitionSteps;
 
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
-import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
-import ivan.rest.example.model.Employee;
-import ivan.rest.example.readFileHelper.ReadFileHelper;
-import ivan.rest.example.util.session.Session;
-import ivan.rest.example.util.session.SessionKey;
 import lombok.extern.slf4j.Slf4j;
+import main.java.ivan.rest.example.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
+import test.java.ivan.rest.example.readFileHelper.ReadFileHelper;
+import test.java.ivan.rest.example.util.session.Session;
+import test.java.ivan.rest.example.util.session.SessionKey;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static ivan.rest.example.definitionSteps.EmployeeSteps.employeeListTypeReference;
-import static ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
+import static test.java.ivan.rest.example.definitionSteps.EmployeeSteps.employeeListTypeReference;
+import static test.java.ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
 
 @Slf4j
-public class TestSessionSteps extends SpringIntegrationTestConfiguration {
+public class TestSessionSteps {
 
     @Autowired
     protected Session session;

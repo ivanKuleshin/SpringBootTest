@@ -1,9 +1,9 @@
-package ivan.rest.example;
+package test.java.ivan.rest.example;
 
-import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
+import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 
 //mvn clean test -Dcucumber.filter.tags="@employee"
 //to run this class with different tags
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "service-test/src/test/resources/features",
-        glue = "ivan.rest.example.definitionSteps",
+        glue = "test.java.ivan.rest.example.definitionSteps",
         tags = "@employee or @test")
 public class RunEmployeeTest extends SpringIntegrationTestConfiguration {
 }

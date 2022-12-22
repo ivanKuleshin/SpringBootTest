@@ -1,4 +1,4 @@
-package ivan.rest.example.controller.advice;
+package main.java.ivan.rest.example.controller.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

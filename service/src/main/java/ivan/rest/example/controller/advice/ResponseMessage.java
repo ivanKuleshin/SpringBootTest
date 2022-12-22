@@ -1,4 +1,4 @@
-package ivan.rest.example.controller.advice;
+package main.java.ivan.rest.example.controller.advice;
 
 import lombok.Getter;
 import lombok.Setter;

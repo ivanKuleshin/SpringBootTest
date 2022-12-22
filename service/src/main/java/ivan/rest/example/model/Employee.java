@@ -1,4 +1,4 @@
-package ivan.rest.example.model;
+package main.java.ivan.rest.example.model;
 
 import lombok.*;
 

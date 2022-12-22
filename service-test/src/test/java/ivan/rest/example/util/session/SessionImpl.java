@@ -1,6 +1,6 @@
-package ivan.rest.example.util.session;
+package test.java.ivan.rest.example.util.session;
 
-import ivan.rest.example.exception.CustomRuntimeException;
+import main.java.ivan.rest.example.exception.CustomRuntimeException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

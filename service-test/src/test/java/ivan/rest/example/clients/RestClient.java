@@ -1,4 +1,4 @@
-package ivan.rest.example.clients;
+package test.java.ivan.rest.example.clients;
 
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
-import static ivan.rest.example.configuration.SpringIntegrationTestConfiguration.baseUrl;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.ofNullable;
+import static test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration.baseUrl;
 
 @Slf4j
 @Component

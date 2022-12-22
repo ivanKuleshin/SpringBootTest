@@ -1,28 +1,28 @@
-package ivan.rest.example.definitionSteps;
+package test.java.ivan.rest.example.definitionSteps;
 
-import io.cucumber.java.*;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.http.Method;
-import ivan.rest.example.clients.RestClient;
-import ivan.rest.example.clients.WireMockClient;
-import ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
-import ivan.rest.example.model.Address;
-import ivan.rest.example.model.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import test.java.ivan.rest.example.clients.RestClient;
+import test.java.ivan.rest.example.clients.WireMockClient;
+import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
+import test.java.ivan.rest.example.util.session.Session;
 
 import java.lang.management.ManagementFactory;
-import java.util.Map;
-
-import static ivan.rest.example.clients.RestClient.RequestTypes.DELETE;
 
 @Slf4j
-public class TagHooks extends SpringIntegrationTestConfiguration {
+public class TagHooks {
     private static final int STATUS_OK = 200;
 
     @Autowired
     private WireMockClient wireMockClient;
     @Autowired
     private RestClient restClient;
+    @Autowired
+    protected Session session;
 
     /**
      * We can use these type of annotations for perform some logic before some scenario or some feature

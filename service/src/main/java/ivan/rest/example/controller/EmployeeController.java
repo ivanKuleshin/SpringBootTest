@@ -1,10 +1,10 @@
-package ivan.rest.example.controller;
+package main.java.ivan.rest.example.controller;
 
-import ivan.rest.example.client.ExternalClient;
-import ivan.rest.example.exception.CustomRuntimeException;
-import ivan.rest.example.model.Address;
-import ivan.rest.example.model.Employee;
-import ivan.rest.example.service.EmployeeService;
+import main.java.ivan.rest.example.client.ExternalClient;
+import main.java.ivan.rest.example.exception.CustomRuntimeException;
+import main.java.ivan.rest.example.model.Address;
+import main.java.ivan.rest.example.model.Employee;
+import main.java.ivan.rest.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

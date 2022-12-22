@@ -1,10 +1,10 @@
-package ivan.rest.example.clients;
+package test.java.ivan.rest.example.clients;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
-import ivan.rest.example.clients.RestClient.RequestTypes;
-import ivan.rest.example.exceptions.TestExecutionException;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
+import test.java.ivan.rest.example.clients.RestClient.RequestTypes;
+import test.java.ivan.rest.example.exceptions.TestExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 

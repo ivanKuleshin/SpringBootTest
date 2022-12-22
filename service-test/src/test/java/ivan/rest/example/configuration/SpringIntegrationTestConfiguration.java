@@ -1,16 +1,21 @@
-package ivan.rest.example.configuration;
+package test.java.ivan.rest.example.configuration;
 
 import io.cucumber.spring.CucumberContextConfiguration;
-import ivan.rest.example.EmployeeRestServiceNoDbApplication;
-import ivan.rest.example.controller.EmployeeController;
-import ivan.rest.example.util.session.Session;
+import io.restassured.RestAssured;
+import main.java.ivan.rest.example.EmployeeRestServiceNoDbApplication;
+import main.java.ivan.rest.example.controller.EmployeeController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import test.java.ivan.rest.example.clients.RestClient;
+import test.java.ivan.rest.example.clients.WireMockClient;
+import test.java.ivan.rest.example.util.session.Session;
+import test.java.ivan.rest.example.util.session.SessionImpl;
 
 import javax.annotation.PostConstruct;
 
@@ -31,17 +36,11 @@ import javax.annotation.PostConstruct;
 @ActiveProfiles(value = "test")
 @CucumberContextConfiguration
 @SpringBootTest(classes = EmployeeRestServiceNoDbApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWireMock(port = 0)
+@AutoConfigureWireMock()
+@Import({SessionImpl.class, WireMockClient.class, RestClient.class})
 public abstract class SpringIntegrationTestConfiguration {
 
     public static String baseUrl;
-
-    @Autowired
-    protected TestRestTemplate restTemplate;
-    @Autowired
-    protected Session session;
-    @Autowired
-    protected EmployeeController controller;
 
     @LocalServerPort
     private int port;

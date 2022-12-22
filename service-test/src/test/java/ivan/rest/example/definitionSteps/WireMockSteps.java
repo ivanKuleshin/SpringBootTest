@@ -1,18 +1,20 @@
-package ivan.rest.example.definitionSteps;
+package test.java.ivan.rest.example.definitionSteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import ivan.rest.example.clients.RestClient.RequestTypes;
-import ivan.rest.example.clients.WireMockClient;
-import ivan.rest.example.util.session.Session;
+import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import test.java.ivan.rest.example.clients.RestClient;
+import test.java.ivan.rest.example.clients.RestClient.RequestTypes;
+import test.java.ivan.rest.example.clients.WireMockClient;
+import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
+import test.java.ivan.rest.example.util.session.Session;
 
-import static ivan.rest.example.util.session.SessionKey.STUB_REQUEST;
-import static ivan.rest.example.util.session.SessionKey.STUB_RESPONSE;
-import static ivan.rest.example.util.testUtils.TestUtil.invalidateParam;
+import static test.java.ivan.rest.example.util.session.SessionKey.STUB_REQUEST;
+import static test.java.ivan.rest.example.util.session.SessionKey.STUB_RESPONSE;
+import static test.java.ivan.rest.example.util.testUtils.TestUtil.invalidateParam;
 
 public class WireMockSteps {
 
