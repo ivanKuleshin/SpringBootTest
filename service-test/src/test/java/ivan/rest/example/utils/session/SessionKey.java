@@ -1,4 +1,4 @@
-package test.java.ivan.rest.example.util.session;
+package test.java.ivan.rest.example.utils.session;
 
 public enum SessionKey {
     EXPECTED_RESULT,

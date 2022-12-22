@@ -1,4 +1,4 @@
-package test.java.ivan.rest.example.readFileHelper;
+package test.java.ivan.rest.example.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;

@@ -1,10 +1,8 @@
 package test.java.ivan.rest.example.definitionSteps;
 
 import io.cucumber.java.en.Given;
-import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

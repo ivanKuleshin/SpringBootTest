@@ -1,21 +1,16 @@
 package test.java.ivan.rest.example.configuration;
 
 import io.cucumber.spring.CucumberContextConfiguration;
-import io.restassured.RestAssured;
 import main.java.ivan.rest.example.EmployeeRestServiceNoDbApplication;
-import main.java.ivan.rest.example.controller.EmployeeController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import test.java.ivan.rest.example.clients.RestClient;
 import test.java.ivan.rest.example.clients.WireMockClient;
-import test.java.ivan.rest.example.util.session.Session;
-import test.java.ivan.rest.example.util.session.SessionImpl;
+import test.java.ivan.rest.example.utils.session.SessionImpl;
 
 import javax.annotation.PostConstruct;
 

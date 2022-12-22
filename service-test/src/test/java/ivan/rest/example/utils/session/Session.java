@@ -1,4 +1,4 @@
-package test.java.ivan.rest.example.util.session;
+package test.java.ivan.rest.example.utils.session;
 
 public interface Session {
     void put(SessionKey key, Object object);

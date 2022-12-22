@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import test.java.ivan.rest.example.clients.RestClient;
 import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
 import test.java.ivan.rest.example.exceptions.TestExecutionException;
-import test.java.ivan.rest.example.util.session.Session;
+import test.java.ivan.rest.example.utils.session.Session;
 
 import java.util.List;
 import java.util.Map;
@@ -29,10 +29,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration.baseUrl;
-import static test.java.ivan.rest.example.util.session.SessionKey.*;
 import static test.java.ivan.rest.example.util.testUtils.TestUtil.castMapToObject;
 import static test.java.ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
+import static test.java.ivan.rest.example.utils.session.SessionKey.*;
 
 @Slf4j
 @CucumberContextConfiguration

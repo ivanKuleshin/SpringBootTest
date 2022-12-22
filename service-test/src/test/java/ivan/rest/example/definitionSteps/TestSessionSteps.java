@@ -5,10 +5,9 @@ import io.cucumber.java.en.Given;
 import lombok.extern.slf4j.Slf4j;
 import main.java.ivan.rest.example.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
-import test.java.ivan.rest.example.readFileHelper.ReadFileHelper;
-import test.java.ivan.rest.example.util.session.Session;
-import test.java.ivan.rest.example.util.session.SessionKey;
+import test.java.ivan.rest.example.utils.ReadFileHelper;
+import test.java.ivan.rest.example.utils.session.Session;
+import test.java.ivan.rest.example.utils.session.SessionKey;
 
 import java.util.List;
 import java.util.Map;
