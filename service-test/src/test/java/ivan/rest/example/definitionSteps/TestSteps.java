@@ -1,4 +1,4 @@
-package test.java.ivan.rest.example.definitionSteps;
+package ivan.rest.example.definitionSteps;
 
 import io.cucumber.java.en.Given;
 import lombok.extern.slf4j.Slf4j;

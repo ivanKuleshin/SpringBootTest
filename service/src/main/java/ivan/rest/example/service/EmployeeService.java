@@ -1,7 +1,7 @@
-package main.java.ivan.rest.example.service;
+package ivan.rest.example.service;
 
-import main.java.ivan.rest.example.exception.CustomRuntimeException;
-import main.java.ivan.rest.example.model.Employee;
+import ivan.rest.example.exception.CustomRuntimeException;
+import ivan.rest.example.model.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;

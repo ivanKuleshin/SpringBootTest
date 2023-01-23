@@ -1,10 +1,9 @@
-package test.java.ivan.rest.example.clients;
+package ivan.rest.example.test.clients;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import ivan.rest.example.test.exceptions.TestExecutionException;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import test.java.ivan.rest.example.clients.RestClient.RequestTypes;
-import test.java.ivan.rest.example.exceptions.TestExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
@@ -17,7 +16,7 @@ public class WireMockClient {
     }
 
     @SneakyThrows
-    public void publishMapping(RequestTypes requestType, String url, String requestBody, String responseBody) {
+    public void publishMapping(RestClient.RequestTypes requestType, String url, String requestBody, String responseBody) {
         switch (requestType) {
             case PUT, POST -> WireMock
                     .stubFor(request(requestType.getValue(), urlEqualTo(url))
@@ -31,7 +30,7 @@ public class WireMockClient {
         }
     }
 
-    public void verifyMapping(RequestTypes requestType, String url, int count) {
+    public void verifyMapping(RestClient.RequestTypes requestType, String url, int count) {
         switch (requestType) {
             case DELETE -> WireMock.verify(count, deleteRequestedFor(urlEqualTo(url)));
             case PUT -> WireMock.verify(count, putRequestedFor(urlEqualTo(url)));

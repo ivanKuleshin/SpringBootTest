@@ -1,4 +1,4 @@
-package test.java.ivan.rest.example.util.testUtils;
+package ivan.rest.example.test.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

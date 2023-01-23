@@ -1,41 +1,43 @@
-package test.java.ivan.rest.example.definitionSteps;
+package ivan.rest.example.definitionSteps;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
+import ivan.rest.example.controller.EmployeeController;
+import ivan.rest.example.exception.CustomRuntimeException;
+import ivan.rest.example.model.Employee;
+import ivan.rest.example.test.clients.RestClient;
+import ivan.rest.example.test.exceptions.TestExecutionException;
+import ivan.rest.example.test.utils.session.Session;
 import lombok.extern.slf4j.Slf4j;
-import main.java.ivan.rest.example.controller.EmployeeController;
-import main.java.ivan.rest.example.exception.CustomRuntimeException;
-import main.java.ivan.rest.example.model.Employee;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import test.java.ivan.rest.example.clients.RestClient;
-import test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration;
-import test.java.ivan.rest.example.exceptions.TestExecutionException;
-import test.java.ivan.rest.example.utils.session.Session;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static ivan.rest.example.test.utils.TestUtil.castMapToObject;
+import static ivan.rest.example.test.utils.TestUtil.convertValueToList;
+import static ivan.rest.example.test.utils.session.SessionKey.ACTUAL_LIST;
+import static ivan.rest.example.test.utils.session.SessionKey.ACTUAL_RESULT;
+import static ivan.rest.example.test.utils.session.SessionKey.EXPECTED_LIST;
+import static ivan.rest.example.test.utils.session.SessionKey.EXPECTED_RESULT;
+import static ivan.rest.example.test.utils.session.SessionKey.RESPONSE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static test.java.ivan.rest.example.util.testUtils.TestUtil.castMapToObject;
-import static test.java.ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
-import static test.java.ivan.rest.example.utils.session.SessionKey.*;
 
 @Slf4j
-@CucumberContextConfiguration
-public class EmployeeSteps extends SpringIntegrationTestConfiguration {
+public class EmployeeSteps {
 
     @Autowired
     private RestClient restClient;
@@ -45,6 +47,9 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
     protected Session session;
     @Autowired
     protected EmployeeController controller;
+
+    @Value("${employee.service.host}")
+    private String baseUrl;
 
     private static final int FIRST = 0;
     private static final int STATUS_OK = 200;
@@ -197,6 +202,4 @@ public class EmployeeSteps extends SpringIntegrationTestConfiguration {
         assertThat(controller).isNotNull();
         log.info("Controller checking...");
     }
-
-
 }

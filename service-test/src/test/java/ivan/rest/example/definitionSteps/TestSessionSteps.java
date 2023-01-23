@@ -1,20 +1,20 @@
-package test.java.ivan.rest.example.definitionSteps;
+package ivan.rest.example.definitionSteps;
 
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
+import ivan.rest.example.model.Employee;
+import ivan.rest.example.test.utils.ReadFileHelper;
+import ivan.rest.example.test.utils.session.Session;
+import ivan.rest.example.test.utils.session.SessionKey;
 import lombok.extern.slf4j.Slf4j;
-import main.java.ivan.rest.example.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.java.ivan.rest.example.utils.ReadFileHelper;
-import test.java.ivan.rest.example.utils.session.Session;
-import test.java.ivan.rest.example.utils.session.SessionKey;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static test.java.ivan.rest.example.definitionSteps.EmployeeSteps.employeeListTypeReference;
-import static test.java.ivan.rest.example.util.testUtils.TestUtil.convertValueToList;
+import static ivan.rest.example.test.utils.TestUtil.convertValueToList;
+
 
 @Slf4j
 public class TestSessionSteps {
@@ -48,7 +48,7 @@ public class TestSessionSteps {
     @Given("the entity is deleted from '{sessionKey}' list by id = {int} in test session")
     public void deleteEntityFromTestSessionByParam(SessionKey sessionKey, int paramValue) {
 
-        List<Employee> updatedList = convertValueToList(session.get(sessionKey), employeeListTypeReference)
+        List<Employee> updatedList = convertValueToList(session.get(sessionKey), EmployeeSteps.employeeListTypeReference)
                 .stream().filter(x -> x.getId() == paramValue).collect(Collectors.toList());
 
         session.put(sessionKey, updatedList);

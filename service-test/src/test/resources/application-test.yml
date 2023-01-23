@@ -11,7 +11,9 @@ logging:
 
 employee:
   service:
-    host: localhost
+    host: http://localhost:1488
+
+server.port: 1488
 
 ivan:
   test:

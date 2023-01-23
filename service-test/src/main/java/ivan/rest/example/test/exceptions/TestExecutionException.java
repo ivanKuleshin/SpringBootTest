@@ -1,4 +1,4 @@
-package test.java.ivan.rest.example.exceptions;
+package ivan.rest.example.test.exceptions;
 
 public class TestExecutionException extends RuntimeException {
 

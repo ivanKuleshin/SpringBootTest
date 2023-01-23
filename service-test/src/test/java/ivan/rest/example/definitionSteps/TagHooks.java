@@ -1,13 +1,13 @@
-package test.java.ivan.rest.example.definitionSteps;
+package ivan.rest.example.definitionSteps;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.restassured.http.Method;
+import ivan.rest.example.test.clients.RestClient;
+import ivan.rest.example.test.clients.WireMockClient;
+import ivan.rest.example.test.utils.session.Session;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.java.ivan.rest.example.clients.RestClient;
-import test.java.ivan.rest.example.clients.WireMockClient;
-import test.java.ivan.rest.example.utils.session.Session;
 
 import java.lang.management.ManagementFactory;
 

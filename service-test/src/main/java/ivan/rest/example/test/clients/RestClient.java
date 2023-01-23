@@ -1,21 +1,32 @@
-package test.java.ivan.rest.example.clients;
+package ivan.rest.example.test.clients;
 
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import ivan.rest.example.test.annotations.CucumberComponent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.Map;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.basePath;
+import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.ofNullable;
-import static test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration.baseUrl;
+//import static ivan.rest.example.configuration.TestConfig.baseUrl;
+//import static test.java.ivan.rest.example.configuration.SpringIntegrationTestConfiguration.baseUrl;
 
 @Slf4j
+//@CucumberComponent
 @Component
 public class RestClient {
+
+    @Value("${employee.service.host}")
+    private String baseUrl;
+
     private static final String LOG_MESSAGE = "[{}] request was sent for URI: {}\nWith url parameter: {}";
     private static final String NULL = "null";
 

@@ -1,14 +1,13 @@
-package test.java.ivan.rest.example.definitionSteps;
+package ivan.rest.example.definitionSteps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
-import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.http.Method;
-import main.java.ivan.rest.example.model.Address;
-import main.java.ivan.rest.example.model.Employee;
+import ivan.rest.example.test.clients.RestClient;
+import ivan.rest.example.model.Address;
+import ivan.rest.example.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.java.ivan.rest.example.clients.RestClient;
 
 import java.util.List;
 import java.util.Map;

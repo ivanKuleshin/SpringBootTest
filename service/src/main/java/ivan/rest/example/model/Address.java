@@ -1,4 +1,4 @@
-package main.java.ivan.rest.example.model;
+package ivan.rest.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

@@ -1,6 +1,6 @@
-package main.java.ivan.rest.example.client;
+package ivan.rest.example.client;
 
-import main.java.ivan.rest.example.model.Address;
+import ivan.rest.example.model.Address;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
