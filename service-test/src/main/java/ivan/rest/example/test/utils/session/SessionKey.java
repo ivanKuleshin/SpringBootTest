@@ -7,5 +7,6 @@ public enum SessionKey {
     ACTUAL_LIST,
     RESPONSE,
     STUB_REQUEST,
-    STUB_RESPONSE
+    STUB_RESPONSE,
+    EXPECTED_MOCK_ADDRESS
 }

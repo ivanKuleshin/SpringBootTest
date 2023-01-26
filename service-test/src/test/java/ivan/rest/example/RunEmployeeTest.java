@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
     features = "src/test/resources/features",
     glue = {"ivan.rest.example.definitionSteps", "ivan.rest.example.configuration"},
-    tags = "@employee or @test")
+    tags = "(@employee or @test) and not @ignore")
 public class RunEmployeeTest {
 
 }

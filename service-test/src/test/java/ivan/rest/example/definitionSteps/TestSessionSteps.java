@@ -2,6 +2,7 @@ package ivan.rest.example.definitionSteps;
 
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
+import ivan.rest.example.model.Address;
 import ivan.rest.example.model.Employee;
 import ivan.rest.example.test.utils.ReadFileHelper;
 import ivan.rest.example.test.utils.session.Session;
@@ -33,11 +34,18 @@ public class TestSessionSteps {
         session.put(sessionKey, map);
     }
 
-    @Given("the '{sessionKey}' variable is created in test session from {string} file with {string} template")
-    public void updateVariableInTestSession(SessionKey sessionKey, String fileName, String templateName){
+    @Given("the Employee '{sessionKey}' variable is created in test session from {string} file with {string} template")
+    public void updateEmployeeVariableInTestSession(SessionKey sessionKey, String fileName, String templateName){
         Employee employee = ReadFileHelper.getRequestAs(templateName, fileName, Employee.class);
 
         session.put(sessionKey, employee);
+    }
+
+    @Given("the Address '{sessionKey}' variable is created in test session from {string} file with {string} template")
+    public void updateAddressVariableInTestSession(SessionKey sessionKey, String fileName, String templateName){
+        Address address = ReadFileHelper.getRequestAs(templateName, fileName, Address.class);
+
+        session.put(sessionKey, address);
     }
 
     @Given("the '{sessionKey}' variable is initialized in test session with {string} value")

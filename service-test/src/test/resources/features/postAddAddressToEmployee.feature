@@ -7,7 +7,7 @@ Feature: Add Employee Address into repository
       | id   | name   | passportNumber   | education   |
       | <id> | <name> | <passportNumber> | <education> |
 
-    And the 'EXPECTED_RESULT' variable is created in test session from "employeeWithAddress" file with "add-address-to-employee" template
+    And the Employee 'EXPECTED_RESULT' variable is created in test session from "employeeWithAddress" file with "add-address-to-employee" template
 
 #    configure WireMock
     And the 'STUB_REQUEST' variable is created in test session
