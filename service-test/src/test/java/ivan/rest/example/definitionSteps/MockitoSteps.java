@@ -17,15 +17,17 @@ public class MockitoSteps {
 
   @Given("expected behaviour was set for ExternalClient.getEmployeeHash with '{int}' employeeId and expected {string} hash")
   public void setExpectedBehaviourForGetEmployeeHash(Integer employeeId, String expectedHash) {
-    Mockito.when(externalClient.getEmployeeHash(employeeId)).thenReturn(expectedHash);
+
+//    Mockito.when(externalClient.getEmployeeHash(employeeId)).thenReturn(expectedHash);
+    Mockito.doReturn(expectedHash).when(externalClient).getEmployeeHash(employeeId);
   }
 
   @Given("expected behaviour was set for ExternalClient.addAddress with '{int}' employeeId and Address entry:")
   public void setExpectedBehaviourForAddAddress(Integer employeeId, Address address) {
-    Address expectedMockAddress = TestUtil.castMapToObject(session.get(EXPECTED_MOCK_ADDRESS), Address.class);
+    Address expectedMockAddress =
+        TestUtil.castMapToObject(session.get(EXPECTED_MOCK_ADDRESS), Address.class);
 
-    Mockito.when(externalClient.addAddress(employeeId, address))
-        .thenReturn(expectedMockAddress);
+    Mockito.doReturn(expectedMockAddress).when(externalClient).addAddress(employeeId, address);
   }
 
   @Given("reset all mocks")

@@ -44,9 +44,6 @@ public class TagHooks {
     long threadId = Thread.currentThread().getId();
     String processName = ManagementFactory.getRuntimeMXBean().getName();
     log.info(String.format("Started in thread: %s, in JVM: %s", threadId, processName));
-
-    // Setup default behaviour for mocks
-    setUpDefaultMockBehaviour();
   }
 
   /** This method will perform after each feature file */
@@ -57,12 +54,5 @@ public class TagHooks {
 
     session.clear();
     log.info("Test session was cleaned!");
-  }
-
-  private void setUpDefaultMockBehaviour() {
-    Mockito.when(externalClient.getEmployeeHash(Mockito.any())).thenCallRealMethod();
-    Mockito.when(externalClient.addAddress(Mockito.any(), Mockito.any())).thenCallRealMethod();
-    Mockito.doCallRealMethod().when(externalClient).getAllEmployees();
-    Mockito.doCallRealMethod().when(externalClient).deleteRequestToExternalService(Mockito.any());
   }
 }

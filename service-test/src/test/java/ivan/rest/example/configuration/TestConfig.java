@@ -4,9 +4,8 @@ import ivan.rest.example.client.ExternalClient;
 import ivan.rest.example.test.clients.RestClient;
 import ivan.rest.example.test.clients.WireMockClient;
 import ivan.rest.example.test.utils.session.SessionImpl;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ import javax.annotation.PostConstruct;
 @Import({SessionImpl.class, WireMockClient.class, RestClient.class})
 public class TestConfig {
 
-  @Mock
+  @Spy
   private ExternalClient externalClient;
 
 //  @LocalServerPort private int port;
