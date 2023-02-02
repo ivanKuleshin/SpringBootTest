@@ -30,6 +30,13 @@ public class MockitoSteps {
     Mockito.doReturn(expectedMockAddress).when(externalClient).addAddress(employeeId, address);
   }
 
+  @Given("expected unsuccessful behaviour was set for ExternalClient.addAddress with '{int}' employeeId and Address entry:")
+  public void setExpectedUnsuccessfulBehaviourForAddAddress(Integer employeeId, Address address) {
+    Mockito.doThrow(new RuntimeException("Error during adding an address to Object"))
+        .when(externalClient)
+        .addAddress(employeeId, address);
+  }
+
   @Given("reset all mocks")
   public void resetAllMocks() {
     Mockito.reset(externalClient);
